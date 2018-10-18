@@ -14,7 +14,6 @@ module.exports = (env, argv) => {
     module: {
       rules: [{
         test: [/\.scss$/, /\.css$/],
-        include: path.resolve(__dirname, 'src'),
         use: [
             "style-loader", // creates style nodes from JS strings
             "css-loader", // translates CSS into CommonJS
@@ -26,7 +25,6 @@ module.exports = (env, argv) => {
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
-          include: path.resolve(__dirname, 'src'),
           options: {
             presets: ['@babel/preset-env']
           }
@@ -34,7 +32,6 @@ module.exports = (env, argv) => {
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        include: path.resolve(__dirname, 'src'),
         use: [
           'file-loader'
         ]
@@ -47,7 +44,13 @@ module.exports = (env, argv) => {
         template: './src/index.html'
       }),
     ],
-    devtool: isProduction? 'source-map' : 'cheap-eval-source-map'
+    devtool: isProduction? 'source-map' : 'cheap-eval-source-map',
+    devServer: {
+      contentBase: path.join(__dirname, 'dist'),
+      compress: true,
+      port: 3000
+    }
+    
   }
 }
 
