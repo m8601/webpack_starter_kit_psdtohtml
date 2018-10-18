@@ -13,13 +13,33 @@ module.exports = (env, argv) => {
     },
     module: {
       rules: [{
-          test: [/\.scss$/, /\.css$/],
-          use: [
-              "style-loader", // creates style nodes from JS strings
-              "css-loader", // translates CSS into CommonJS
-              "sass-loader" // compiles Sass to CSS, using Node Sass by default
-          ]
-      }]
+        test: [/\.scss$/, /\.css$/],
+        include: path.resolve(__dirname, 'src'),
+        use: [
+            "style-loader", // creates style nodes from JS strings
+            "css-loader", // translates CSS into CommonJS
+            "sass-loader" // compiles Sass to CSS, using Node Sass by default
+        ]
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          include: path.resolve(__dirname, 'src'),
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        include: path.resolve(__dirname, 'src'),
+        use: [
+          'file-loader'
+        ]
+      }
+    ]
     },
     plugins: [
       new HtmlWebpackPlugin({
